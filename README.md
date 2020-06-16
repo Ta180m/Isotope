@@ -26,7 +26,7 @@ Send the Hekate payload to your Switch in RCM mode and launch the CFW
 
 
 ## Featuring
-#### Every Package
+### Every Package
 * [Atmosphère](https://github.com/Atmosphere-NX/Atmosphere)
 * [Hekate](https://github.com/CTCaer/hekate)
 
