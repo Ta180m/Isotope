@@ -5,11 +5,12 @@ string elem[120] = { "","Hydrogen","Helium","Lithium","Beryllium","Boron","Carbo
 
 int main() {
 	ifstream cin("VERSION");
+	cin.ignore(12);
 	int v;
 	cin >> v;
 	++v;
-	ofstream cout("VERSION");
-	cout << v;
-	ofstream name("NAME");
-	name << elem[v];
+	ofstream a("NUMBER");
+	a << v;
+	ofstream b("NAME");
+	b << elem[v];
 }

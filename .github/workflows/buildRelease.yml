@@ -34,9 +34,9 @@ jobs:
       run: |
         g++ bump_version.cpp -o bump_version
         ./bump_version
-        echo ::set-env name=VERSION::$(cat ./VERSION)
+        echo ::set-env name=VERSION::$(cat ./NUMBER)
         echo ::set-env name=NAME::$(cat ./NAME)
-        rm ./NAME
+        rm ./NAME ./NUMBER
         
     - name: Create config script
       env:
@@ -70,6 +70,16 @@ jobs:
         python ./builder.py isotope-mini-patches output="./isotope-minimal-patches.zip" >> ../output
         echo ""  >> ../output
     
+    - name: Check changes
+      run: |
+        changes=$(diff ./VERSION ./output | grep "^>" | wc -l)
+        if [ $changes == "4" ]; then
+          set -e o pipefail
+        else
+          cp ./output ./VERSION
+          rm ./output
+        fi
+
     - name: Commit files	
       run: |	
         git config --local user.email "action@github.com"
