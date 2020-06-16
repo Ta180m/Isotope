@@ -19,6 +19,8 @@
 
 
 ## How to use
+Isotope is experimental and not intended for general use.
+
 Follow this guide to mod your switch: https://switch.homebrew.guide
 
 Download the latest release and put it on your SD Card<br />
