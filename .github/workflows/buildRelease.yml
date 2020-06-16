@@ -73,9 +73,7 @@ jobs:
     - name: Check changes
       run: |
         changes=$(diff ./VERSION ./output | grep "^>" | wc -l)
-        if [ $changes == "4" ]; then
-          set -e o pipefail
-        else
+        if [ $changes != "4" ]; then
           cp ./output ./VERSION
           rm ./output
         fi
