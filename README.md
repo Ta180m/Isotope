@@ -2,18 +2,18 @@
 
 ## A custom all-in-one CFW package for the Nintendo Switch, based on Kosmos and Deepsea.
 
-
 ---
 
 ## Features
 * Vanilla Atmosphère
-* Always up-to-date packages
+* Packages updated weekly
 * Background FTP Server
 * Updating directly from your console
 * Customize button bindings
 * Easy drag and drop install
 * Ability to enable autoboot without touching config files
 * Starting and reloading system modules without restarting
+* No aggressive branding
 * The latest and greatest homebrew from the scene
 * **and much more!**
 
@@ -37,7 +37,7 @@ Send the Hekate payload to your Switch in RCM mode and launch the CFW
 * [emuiibo](https://github.com/XorTroll/emuiibo)
 * [Goldleaf](https://github.com/XorTroll/Goldleaf)
 * [Awoo Installer](https://github.com/Huntereb/Awoo-Installer)
-* [Hekate Toolbox](https://github.com/WerWolv/Hekate-Toolbox)
+* [Isotope Toolbox](https://github.com/Ta180m/Isotope-Toolbox)
 * [Isotope Updater](https://github.com/Ta180m/Isotope-Updater)
 * [Isotope Cleaner](https://github.com/Ta180m/Isotope-Cleaner)
 * [JKSV](https://github.com/J-D-K/JKSV)

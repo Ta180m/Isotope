@@ -229,7 +229,7 @@ def download_hekate(module, temp_directory, isotope_version, isotope_build):
                             temp_directory.joinpath('bootloader/bootlogo.bmp'))
     common.copy_module_file('hekate', 'hekate_ipl.ini',
                             temp_directory.joinpath('bootloader/hekate_ipl.ini'))
-    common.sed('DEEPSEA_VERSION', isotope_version,
+    common.sed('ISOTOPE_VERSION', isotope_version,
                temp_directory.joinpath('bootloader/hekate_ipl.ini'))
 
     payload = common.find_file(temp_directory.joinpath('hekate_ctcaer_*.bin'))
@@ -395,7 +395,7 @@ def download_isotope_updater(module, temp_directory, isotope_version, isotope_bu
         'switch/Isotope-Updater/Isotope-Updater.nro'))
     common.copy_module_file('isotope-updater', 'internal.db',
                             temp_directory.joinpath('switch/Isotope-Updater/internal.db'))
-    common.sed('DEEPSEA_VERSION', isotope_version,
+    common.sed('ISOTOPE_VERSION', isotope_version,
                temp_directory.joinpath('switch/Isotope-Updater/internal.db'))
 
     return get_version(module, release, 0)
@@ -630,7 +630,7 @@ def download_pkg2_patches(module, temp_directory, isotope_version, isotope_build
     common.delete(temp_directory.joinpath('bootloader/hekate_ipl.ini'))
     common.copy_module_file('hekate', 'hekate_ipl_patches.ini',
                             temp_directory.joinpath('bootloader/hekate_ipl.ini'))
-    common.sed('DEEPSEA_VERSION', isotope_version,
+    common.sed('ISOTOPE_VERSION', isotope_version,
                temp_directory.joinpath('bootloader/hekate_ipl.ini'))
     return get_version(module, release, 0)
 

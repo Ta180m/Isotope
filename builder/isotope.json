@@ -122,12 +122,12 @@
         "sdsetup_module_name": null
     },
     {
-        "name": "Hekate Toolbox",
-        "download_function_name": "download_hekate_toolbox",
+        "name": "Isotope Toolbox",
+        "download_function_name": "download_isotope_toolbox",
         "git": {
             "service": 0,
-            "org_name": "WerWolv",
-            "repo_name": "Hekate-Toolbox",
+            "org_name": "Ta180m",
+            "repo_name": "Isotope-Toolbox",
             "asset_patterns": [
                 ".*\\.nro"
             ],
