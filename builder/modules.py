@@ -225,8 +225,8 @@ def download_hekate(module, temp_directory, isotope_version, isotope_build):
 
     common.delete(bundle_path)
 
-    common.copy_module_file('hekate', 'bootlogo.bmp',
-                            temp_directory.joinpath('bootloader/bootlogo.bmp'))
+    # common.copy_module_file('hekate', 'bootlogo.bmp',
+                            # temp_directory.joinpath('bootloader/bootlogo.bmp'))
     common.copy_module_file('hekate', 'hekate_ipl.ini',
                             temp_directory.joinpath('bootloader/hekate_ipl.ini'))
     common.sed('ISOTOPE_VERSION', isotope_version,
@@ -378,7 +378,7 @@ def download_isotope_toolbox(module, temp_directory, isotope_version, isotope_bu
     common.move(app_path, temp_directory.joinpath(
         'switch/Isotope-Toolbox/Isotope-Toolbox.nro'))
 
-    common.copy_module_file('hekate-toolbox', 'config.json',
+    common.copy_module_file('isotope-toolbox', 'config.json',
                             temp_directory.joinpath('switch/Isotope-Toolbox/config.json'))
 
     return get_version(module, release, 0)
@@ -661,14 +661,28 @@ def build(temp_directory, isotope_version, command, auto_build):
         modules_filename = "isotope-patches.json"
     elif command == common.Command.IsotopeMinimalPatches:
         modules_filename = "isotope-minimal-patches.json"
+	
+    # Open up modules-definitions.json first and load all modules
+    mods_map = {}
+    with open("Modules/modules-definitions.json") as mod_json_file:
+        mods_data = json.load(mod_json_file)
 
+        for module_def in mods_data:
+            name = module_def['name']
+            if name in mods_map:
+                raise Exception('Multiple definitions of module with name '+name)
+            mods_map[name] = module_def
+            
     # Open up modules.json
     with open(modules_filename) as json_file:
         # Parse JSON
         data = json.load(json_file)
 
         # Loop through modules
-        for module in data:
+        for mod_id in data:
+            if mod_id not in mods_map:
+                raise Exception('Module with name '+mod_id+' does not exist')
+            module = mods_map[mod_id]
             # Running a SDSetup Build
             if command == common.Command.SDSetup:
                 # Make sure module directory is created.

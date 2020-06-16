@@ -15,16 +15,23 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       
-    - name: Increment version
+    - name: Bump version
       run: |
-        echo ::set-env name=TAG_NAME::$(cat ./VERSION)
+        g++ bump_version.cpp bump_version
+        ./bump_version
+        echo ::set-env name=VERSION::$(cat ./VERSION)
+        echo ::set-env name=NAME::$(cat ./NAME)
+        rm ./NAME
 
-    - name: Bump release version	
-      id: bump_version	
-      uses: christian-draeger/increment-semantic-version@1.0.1	
-      with:	
-        current-version: '${{ env.TAG_NAME }}'	
-        version-fragment: 'bug'    
+    - name: Commit files	
+      run: |	
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -m "[Auto] bump push after build" -a
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Set up Python 3.8
       uses: actions/setup-python@v1
@@ -41,7 +48,7 @@ jobs:
         gitToken: ${{ secrets.SLX_GIT_TOKEN }}
         gitUser: ${{ secrets.SLX_GIT_USER }}
       run: | 
-        echo -e "version = 'v${{ steps.bump_version.outputs.next-version }}'\ngithub_username = '$gitUser'\ngithub_password = '$gitPass'\ngitlab_private_access_token = '$gitToken'"> ./builder/config.py
+        echo -e "version = 'v${{ VERSION }}'\ngithub_username = '$gitUser'\ngithub_password = '$gitPass'\ngitlab_private_access_token = '$gitToken'"> ./builder/config.py
     
     - name: Compile Isotope Zip
       run: |
@@ -61,10 +68,6 @@ jobs:
         python ./builder.py isotope-mini output="./isotope-minimal.zip" >> ../output
         echo ""  >> ../output
     
-    - name: Bump VERSION
-      run: |	
-       echo ${{ steps.bump_version.outputs.next-version }} > ./VERSION
-    
     - uses: pCYSl5EDgo/cat@master
       id: release
       with:
@@ -76,8 +79,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-          tag_name: ${{ steps.bump_version.outputs.next-version }}
-          release_name: Release ${{ steps.bump_version.outputs.next-version }}
+          tag_name: ${{ VERSION }}
+          release_name: v${{ VERSION }} - ${{ NAME }}
           body: |
             ${{ steps.release.outputs.text }}
           draft: false
@@ -92,7 +95,7 @@ jobs:
       with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: ./builder/isotope.zip
-          asset_name: isotope_v${{ steps.bump_version.outputs.next-version }}.zip
+          asset_name: isotope_v${{ VERSION }}.zip
           asset_content_type: application/zip
 
 
@@ -104,9 +107,8 @@ jobs:
       with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: ./builder/isotope-patched.zip
-          asset_name: isotope-patched_v${{ steps.bump_version.outputs.next-version }}.zip
+          asset_name: isotope-patched_v${{ VERSION }}.zip
           asset_content_type: application/zip
-
 
 
     - name: Upload Release Asset - Isotope-Minimal
@@ -117,16 +119,7 @@ jobs:
       with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: ./builder/isotope-minimal.zip
-          asset_name: isotope-minimal_v${{ steps.bump_version.outputs.next-version }}.zip
+          asset_name: isotope-minimal_v${{ VERSION }}.zip
           asset_content_type: application/zip   
 
 
-    - name: Commit files	
-      run: |	
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git commit -m "[Auto] bump push after build" -a
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}

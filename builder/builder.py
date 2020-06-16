@@ -92,15 +92,15 @@ def get_isotope_version(args):
 
 def init_version_messages(args, isotope_version):
     if args.command == common.Command.Isotope:
-        return [f'Isotope {isotope_version} built with:']
+        return [f'## Isotope {isotope_version} built with:']
     elif args.command == common.Command.SDSetup and not args.auto:
-        return ['SDSetup Modules built with:']
+        return ['## SDSetup Modules built with:']
     elif args.command == common.Command.IsotopeMinimal:
-        return [f'Isotope Minimal {isotope_version} built with:']
+        return [f'## Isotope Minimal {isotope_version} built with:']
     elif args.command == common.Command.IsotopePatches:
-        return [f'Isotope with Patches {isotope_version} built with:']
+        return [f'## Isotope with Patches {isotope_version} built with:']
     elif args.command == common.Command.IsotopeMinimalPatches:
-        return [f'Isotope Minimal with Patches {isotope_version} built with:']
+        return [f'## Isotope Minimal with Patches {isotope_version} built with:']
     return []
 
 
