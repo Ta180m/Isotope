@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - name: Update and Install Build Dependencies
+    - name: Update and install build dependencies
       run: |
         sudo apt-get update
         sudo apt-get install gcc
