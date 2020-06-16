@@ -1,0 +1,147 @@
+name: BuildRelease
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+   - cron:  '0 0 * * 0'
+
+jobs:
+  build:
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Update and Install Build Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install gcc
+        sudo apt-get clean
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8.3
+
+    - name: Install dependencies
+      run: |
+        if [ -f ./builder/requirements.txt ]; then pip3 install -r ./builder/requirements.txt; fi
+
+    - name: Bump version
+      run: |
+        g++ bump_version.cpp bump_version
+        ./bump_version
+        echo ::set-env name=VERSION::$(cat ./VERSION)
+        echo ::set-env name=NAME::$(cat ./NAME)
+        rm ./NAME
+
+    - name: Commit files	
+      run: |	
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -m "[Auto] bump push after build" -a
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Create config script
+      env:
+        gitPass: ${{ secrets.SLX_GIT_PASS }}
+        gitToken: ${{ secrets.SLX_GIT_TOKEN }}
+        gitUser: ${{ secrets.SLX_GIT_USER }}
+      run: | 
+        echo -e "version = 'v${{ env.VERSION }}'\ngithub_username = '$gitUser'\ngithub_password = '$gitPass'\ngitlab_private_access_token = '$gitToken'"> ./builder/config.py
+    
+    - name: Compile Isotope Zip
+      run: |
+        cd ./builder
+        python ./builder.py isotope output="./isotope.zip" > ../output
+        echo ""  >> ../output
+
+    - name: Compile Isotope-patches Zip
+      run: |
+        cd ./builder
+        python ./builder.py isotope-patches output="./isotope-patched.zip" >> ../output
+        echo ""  >> ../output
+    
+    - name: Compile Isotope-minimal Zip
+      run: |
+        cd ./builder
+        python ./builder.py isotope-mini output="./isotope-minimal.zip" >> ../output
+        echo ""  >> ../output
+
+     - name: Compile Isotope-minimal-patches Zip
+      run: |
+        cd ./builder
+        python ./builder.py isotope-mini-patches output="./isotope-minimal-patches.zip" >> ../output
+        echo ""  >> ../output
+    
+    - uses: pCYSl5EDgo/cat@master
+      id: release
+      with:
+        path: ./output
+    
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          tag_name: ${{ env.VERSION }}
+          release_name: v${{ env.VERSION }} - ${{ env.NAME }}
+          body: |
+            ${{ steps.release.outputs.text }}
+          draft: false
+          prerelease: false
+
+
+    - name: Upload Release Asset - Isotope
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./builder/isotope.zip
+          asset_name: isotope_v${{ env.VERSION }}.zip
+          asset_content_type: application/zip
+
+
+    - name: Upload Release Asset - Isotope-Patches
+      id: upload-release-asset2
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./builder/isotope-patched.zip
+          asset_name: isotope-patched_v${{ env.VERSION }}.zip
+          asset_content_type: application/zip
+
+
+    - name: Upload Release Asset - Isotope-Minimal
+      id: upload-release-asset3
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./builder/isotope-minimal.zip
+          asset_name: isotope-minimal_v${{ env.VERSION }}.zip
+          asset_content_type: application/zip   
+
+    - name: Upload Release Asset - Isotope-Minimal-Patches
+      id: upload-release-asset3
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./builder/isotope-minimal-patches.zip
+          asset_name: isotope-minimal-patches_v${{ env.VERSION }}.zip
+          asset_content_type: application/zip  
+
