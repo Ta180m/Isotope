@@ -135,7 +135,7 @@ jobs:
           asset_content_type: application/zip   
 
     - name: Upload Release Asset - Isotope-Minimal-Patches
-      id: upload-release-asset3
+      id: upload-release-asset4
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
