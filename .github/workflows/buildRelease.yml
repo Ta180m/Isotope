@@ -48,7 +48,7 @@ jobs:
         gitToken: ${{ secrets.SLX_GIT_TOKEN }}
         gitUser: ${{ secrets.SLX_GIT_USER }}
       run: | 
-        echo -e "version = 'v${{ VERSION }}'\ngithub_username = '$gitUser'\ngithub_password = '$gitPass'\ngitlab_private_access_token = '$gitToken'"> ./builder/config.py
+        echo -e "version = 'v${{ env.VERSION }}'\ngithub_username = '$gitUser'\ngithub_password = '$gitPass'\ngitlab_private_access_token = '$gitToken'"> ./builder/config.py
     
     - name: Compile Isotope Zip
       run: |
@@ -79,8 +79,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-          tag_name: ${{ VERSION }}
-          release_name: v${{ VERSION }} - ${{ NAME }}
+          tag_name: ${{ env.VERSION }}
+          release_name: v${{ env.VERSION }} - ${{ env.NAME }}
           body: |
             ${{ steps.release.outputs.text }}
           draft: false
@@ -95,7 +95,7 @@ jobs:
       with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: ./builder/isotope.zip
-          asset_name: isotope_v${{ VERSION }}.zip
+          asset_name: isotope_v${{ env.VERSION }}.zip
           asset_content_type: application/zip
 
 
@@ -107,7 +107,7 @@ jobs:
       with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: ./builder/isotope-patched.zip
-          asset_name: isotope-patched_v${{ VERSION }}.zip
+          asset_name: isotope-patched_v${{ env.VERSION }}.zip
           asset_content_type: application/zip
 
 
@@ -119,7 +119,7 @@ jobs:
       with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: ./builder/isotope-minimal.zip
-          asset_name: isotope-minimal_v${{ VERSION }}.zip
+          asset_name: isotope-minimal_v${{ env.VERSION }}.zip
           asset_content_type: application/zip   
 
 
