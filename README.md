@@ -1,4 +1,4 @@
-# Isotope
+<img src="assets/isotope_wide.png" align="center" width="100%" />
 
 ## A custom all-in-one CFW package for the Nintendo Switch, based on Kosmos and Deepsea.
 
