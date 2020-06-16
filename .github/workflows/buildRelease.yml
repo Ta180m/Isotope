@@ -73,6 +73,12 @@ jobs:
         cd ./builder
         python ./builder.py isotope-mini output="./isotope-minimal.zip" >> ../output
         echo ""  >> ../output
+
+     - name: Compile Isotope-minimal-patches Zip
+      run: |
+        cd ./builder
+        python ./builder.py isotope-mini-patches output="./isotope-minimal-patches.zip" >> ../output
+        echo ""  >> ../output
     
     - uses: pCYSl5EDgo/cat@master
       id: release
@@ -128,4 +134,14 @@ jobs:
           asset_name: isotope-minimal_v${{ env.VERSION }}.zip
           asset_content_type: application/zip   
 
+    - name: Upload Release Asset - Isotope-Minimal-Patches
+      id: upload-release-asset3
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./builder/isotope-minimal-patches.zip
+          asset_name: isotope-minimal-patches_v${{ env.VERSION }}.zip
+          asset_content_type: application/zip  
 

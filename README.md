@@ -1,6 +1,6 @@
 <img src="assets/isotope_wide.png" align="center" width="100%" />
 
-## A custom all-in-one CFW package for the Nintendo Switch, based on Kosmos and Deepsea.
+### A custom all-in-one CFW package for the Nintendo Switch, based on Kosmos and Deepsea.
 
 ---
 
@@ -26,11 +26,11 @@ Send the Hekate payload to your Switch in RCM mode and launch the CFW
 
 
 ## Featuring
-#### Minimal Package
+#### Every Package
 * [Atmosphère](https://github.com/Atmosphere-NX/Atmosphere)
 * [Hekate](https://github.com/CTCaer/hekate)
 
-#### Normal - everything above, AND
+### Normal Packages
 * [Hekate Icons](https://github.com/NicholeMattera/Hekate-Icons)
 * [Homebrew App Store](https://gitlab.com/4TU/hb-appstore)
 * [EdiZon](https://github.com/WerWolv/EdiZon)
@@ -52,7 +52,7 @@ Send the Hekate payload to your Switch in RCM mode and launch the CFW
 * [sys-ftpd-light](https://github.com/cathery/sys-ftpd-light)
 * [ldn_mitm](https://github.com/spacemeowx2/ldn_mitm)
 
-#### Patched - everything above, AND
+### Patches Packages
 * [HarukoNX/PKG2-Patches](https://github.com/HarukoNX/PKG2-Patches)
 * [HarukoNX/ES-Patches](https://github.com/HarukoNX/ES-Patches)
 
