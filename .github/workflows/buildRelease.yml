@@ -37,16 +37,6 @@ jobs:
         echo ::set-env name=VERSION::$(cat ./VERSION)
         echo ::set-env name=NAME::$(cat ./NAME)
         rm ./NAME
-
-    - name: Commit files	
-      run: |	
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git commit -m "[Auto] bump push after build" -a
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
         
     - name: Create config script
       env:
@@ -79,6 +69,16 @@ jobs:
         cd ./builder
         python ./builder.py isotope-mini-patches output="./isotope-minimal-patches.zip" >> ../output
         echo ""  >> ../output
+    
+    - name: Commit files	
+      run: |	
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -m "[Auto] bump push after build" -a
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
     
     - uses: pCYSl5EDgo/cat@master
       id: release
