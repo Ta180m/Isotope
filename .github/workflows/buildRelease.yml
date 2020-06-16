@@ -74,7 +74,7 @@ jobs:
         python ./builder.py isotope-mini output="./isotope-minimal.zip" >> ../output
         echo ""  >> ../output
 
-     - name: Compile Isotope-minimal-patches Zip
+    - name: Compile Isotope-minimal-patches Zip
       run: |
         cd ./builder
         python ./builder.py isotope-mini-patches output="./isotope-minimal-patches.zip" >> ../output
