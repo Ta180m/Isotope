@@ -6,7 +6,7 @@
 
 ## Features
 * Vanilla Atmosphère
-* Packages updated weekly
+* Packages updated daily
 * Background FTP Server
 * Updating directly from your console
 * Customize button bindings
