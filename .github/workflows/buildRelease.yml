@@ -5,7 +5,7 @@ on:
     branches:
       - master
   schedule:
-   - cron:  '0 0,12 * * *'
+   - cron:  '0 0,6,12,18 * * *'
 
 jobs:
   build:
@@ -99,7 +99,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-          tag_name: ${{ env.VERSION }}
+          tag_name: v${{ env.VERSION }}
           release_name: v${{ env.VERSION }} - ${{ env.NAME }}
           body: |
             ${{ steps.release.outputs.text }}
