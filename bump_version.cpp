@@ -5,7 +5,7 @@ string elem[120] = { "","Hydrogen","Helium","Lithium","Beryllium","Boron","Carbo
 
 int main() {
 	ifstream cin("VERSION");
-	cin.ignore(12);
+	cin.ignore(25);
 	int v;
 	cin >> v;
 	++v;
