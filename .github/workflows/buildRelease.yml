@@ -77,7 +77,7 @@ jobs:
         if [ $changes != "1" ]; then
           echo "## Changes" > ./final
           echo >> ./final
-          diff -b -I '^##' ./VERSION ./new | grep '^[<>]' >> ./final
+          diff -b -I '^##' ./new ./VERSION | grep '^[<>]' >> ./final
           echo >> ./final
           cat ./tmp >> ./final
           cp ./new ./VERSION
