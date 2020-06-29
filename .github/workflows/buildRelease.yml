@@ -97,7 +97,7 @@ jobs:
     - uses: pCYSl5EDgo/cat@master
       id: release
       with:
-        path: ./VERSION
+        path: ./final
     
     - name: Create Release
       id: create_release
