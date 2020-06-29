@@ -75,7 +75,7 @@ jobs:
       run: |
         changes=$(diff ./VERSION ./new | grep "^>" | wc -l)
         if [ $changes != "1" ]; then
-          echo "## Changes" > ./final
+          echo "## Changelog" > ./final
           echo >> ./final
           diff -b -I '^##' ./new ./VERSION | grep '^[<>]' >> ./final
           echo >> ./final
