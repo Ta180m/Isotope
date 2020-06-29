@@ -44,38 +44,44 @@ jobs:
         gitToken: ${{ secrets.SLX_GIT_TOKEN }}
         gitUser: ${{ secrets.SLX_GIT_USER }}
       run: | 
-        echo -e "version = 'v${{ env.VERSION }}'\ngithub_username = '$gitUser'\ngithub_password = '$gitPass'\ngitlab_private_access_token = '$gitToken'"> ./builder/config.py
+        echo -e "version = 'v${{ env.VERSION }}'\ngithub_username = '$gitUser'\ngithub_password = '$gitPass'\ngitlab_private_access_token = '$gitToken'"> ./builder/config.py        
     
     - name: Compile Isotope Zip
       run: |
         cd ./builder
-        python ./builder.py isotope output="./isotope.zip" > ../output
-        echo ""  >> ../output
+        python ./builder.py isotope output="./isotope.zip" > ../tmp
+        echo  >> ../tmp
 
     - name: Compile Isotope-patches Zip
       run: |
         cd ./builder
-        python ./builder.py isotope-patches output="./isotope-patched.zip" >> ../output
-        echo ""  >> ../output
+        python ./builder.py isotope-patches output="./isotope-patched.zip" >> ../new
+        cat ../new >> ../tmp
+        echo ""  >> ../tmp
     
     - name: Compile Isotope-minimal Zip
       run: |
         cd ./builder
-        python ./builder.py isotope-mini output="./isotope-minimal.zip" >> ../output
-        echo ""  >> ../output
+        python ./builder.py isotope-mini output="./isotope-minimal.zip" >> ../tmp
+        echo ""  >> ../tmp
 
     - name: Compile Isotope-minimal-patches Zip
       run: |
         cd ./builder
-        python ./builder.py isotope-mini-patches output="./isotope-minimal-patches.zip" >> ../output
-        echo ""  >> ../output
+        python ./builder.py isotope-mini-patches output="./isotope-minimal-patches.zip" >> ../tmp
+        echo ""  >> ../tmp
     
     - name: Check changes
       run: |
-        changes=$(diff ./VERSION ./output | grep "^>" | wc -l)
-        if [ $changes != "4" ]; then
-          cp ./output ./VERSION
-          rm ./output
+        changes=$(diff ./VERSION ./new | grep "^>" | wc -l)
+        if [ $changes != "1" ]; then
+          echo "## Changes" > ./final
+          echo >> ./final
+          diff -b -I '^##' ./VERSION ./new | grep '^[<>]' >> ./final
+          echo >> ./final
+          cat ./tmp >> ./final
+          cp ./new ./VERSION
+          rm ./tmp ./new
         fi
 
     - name: Commit files	
