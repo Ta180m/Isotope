@@ -7,8 +7,7 @@
 ## Features
 * Vanilla Atmosphère
 * Packages updated daily
-* Background FTP Server
-* Updating directly from your console
+* Background FTP server
 * Customize button bindings
 * Easy drag and drop install
 * Ability to enable autoboot without touching config files
@@ -40,7 +39,6 @@ Send the Hekate payload to your Switch in RCM mode and launch the CFW
 * [Goldleaf](https://github.com/XorTroll/Goldleaf)
 * [Awoo Installer](https://github.com/Huntereb/Awoo-Installer)
 * [Isotope Toolbox](https://github.com/Ta180m/Isotope-Toolbox)
-* [Isotope Updater](https://github.com/Ta180m/Isotope-Updater)
 * [Isotope Cleaner](https://github.com/Ta180m/Isotope-Cleaner)
 * [JKSV](https://github.com/J-D-K/JKSV)
 * [nxmtp](https://github.com/liuervehc/nxmtp)
