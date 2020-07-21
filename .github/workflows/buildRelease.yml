@@ -55,7 +55,7 @@ jobs:
     - name: Compile Isotope-patches Zip
       run: |
         cd ./builder
-        python ./builder.py isotope-patches output="./isotope-patched.zip" >> ../new
+        python ./builder.py isotope-patches output="./isotope-patched.zip" > ../new
         cat ../new >> ../tmp
         echo ""  >> ../tmp
     
