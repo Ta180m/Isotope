@@ -1,5 +1,5 @@
 # Current version of Isotope
-version = 'v1.3.1'
+version = 'v6'
 
 # GitHub Login Information
 github_username = ''
